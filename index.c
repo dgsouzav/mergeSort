@@ -1,73 +1,57 @@
-//GitHub: HenriqueIni
-//https://www.blogcyberini.com/
-
 #include <stdio.h>
 #include <stdlib.h>
 
-static void merge(int A[], int inicio, int meio, int fim) {
-    int tamEsq = meio - inicio + 1; //tamanho do subvetor esquerdo
-    int tamDir = fim - meio; //tamanho do subvetor direito
-    int esq[tamEsq]; //subvetor auxiliar esquerdo
-    int dir[tamDir]; //subvetor auxiliar direito
-    int idxEsq = 0; //índice do subvetor auxiliar esquerdo
-    int idxDir = 0; //índice do subvetor auxiliar direito
-    int i, j, k;
-    
-    //Copia os elementos do subvetor esquerdo para o vetor auxiliar
-    for (i = 0; i < tamEsq; i++) {
-        esq[i] = A[inicio + i];
+void mergeSort(int *V, int inicio, int fim) {  // ordena o vetor V entre os índices inicio e fim
+    int meio;
+    if (inicio < fim) { // se o vetor tiver mais de um elemento
+        meio = floor((inicio + fim) / 2); // calcula o meio do vetor	
+        mergeSort(V, inicio, meio); // ordena a primeira metade
+        mergeSort(V, meio + 1, fim); // ordena a segunda metade
+        merge(V, inicio, meio, fim); // intercala as duas metades ordenadas
     }
-    //Copia os elementos do subvetor direito para o vetor auxiliar
-    for (j = 0; j < tamDir; j++) {
-        dir[j] = A[meio + 1 + j];
-    }
+}
 
-    //intercala os vetores
-    for (k = inicio; k <= fim; k++) {
-        if (idxEsq < tamEsq) {
-            if (idxDir < tamDir) {
-                if (esq[idxEsq] < dir[idxDir]) {
-                    A[k] = esq[idxEsq++];
-                } else {
-                    A[k] = dir[idxDir++];
-                }
+void merge(int *V, int inicio, int meio, int fim){
+    int *temp, p1, p2, tamanho, i, j, k;
+    int fim1 = 0, fim2 = 0;
+    tamanho = fim - inicio + 1; // tamanho do vetor temporário
+    p1 = inicio; // primeiro elemento do primeiro vetor
+    p2 = meio + 1;  // primeiro elemento do segundo vetor
+    temp = (int *) malloc(tamanho * sizeof(int));  // aloca o vetor temporário
+
+    if(temp != NULL) {
+        for(i = 0; i < tamanho; i++) {
+            
+            // se não chegou ao final de nenhum dos vetores
+            if(!fim1 && !fim2) {
+                if(V[p1] < V[p2]) // compara os elementos 
+                    temp[i] = V[p1++]; // copia o elemento do primeiro vetor
+                else
+                    temp[i] = V[p2++];  // copia o elemento do segundo vetor
+                
+            
+                // verifica se chegou ao final de algum dos vetores
+                if(p1 > meio) fim1 = 1;
+                if(p2 > fim) fim2 = 1;
+            
+            
             } else {
-                A[k] = esq[idxEsq++];
+            
+                // se chegou ao final de um dos vetores, copia os elementos do outro vetor
+                if(!fim1)
+                    temp[i] = V[p1++]; 
+                else
+                    temp[i] = V[p2++];
+            
+            
             }
-        } else {
-            A[k] = dir[idxDir++];
         }
+        
+        // copiar o vetor temporário para o vetor original
+        for(j = 0, k = inicio; j < tamanho; j++, k++)  
+            V[k] = temp[j];
+    
+    
     }
-}
-
-/*
- * Algoritmo de ordenação por intercação/fusão
- * 
- * Adaptado o livro "Algoritmos: teoria e prática" (Cormen et al)
- * 
- * 'A' é o vetor de inteiros que será ordenado, 'inicio' é o indice inicial
- * e 'fim' é o índice final
- * Melhor caso: O(n log n)
- * Caso médio: O(n log n)
- * Pior caso: O(n log n)
- */
-void mergeSort(int A[], int inicio, int fim) {
-    if (inicio < fim) {
-        int meio = (inicio + fim) / 2; //calcula o meio
-        mergeSort(A, inicio, meio); //ordena do subvetor esquerdo
-        mergeSort(A, meio + 1, fim); //ordena do subvetor direito
-        merge(A, inicio, meio, fim); //funde os subvetores esquerdo e direito
-    }
-}
-
-int main() {
-    //testa o merge sort para vetores inteiros
-    int n = 10;
-    int A[10] = {5, 2, 7, 6, 2, 1, 0, 3, 9, 4};
-    printf("A (desordenado) = [%d, %d, %d, %d, %d, %d, %d, %d, %d, %d]\n",
-            A[0], A[1], A[2], A[3], A[4], A[5], A[6], A[7], A[8], A[9]);
-    mergeSort(A, 0, n - 1);
-    printf("A (ordenado) = [%d, %d, %d, %d, %d, %d, %d, %d, %d, %d]\n",
-            A[0], A[1], A[2], A[3], A[4], A[5], A[6], A[7], A[8], A[9]);
-    return 0;
+    free(temp);
 }

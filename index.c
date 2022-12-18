@@ -55,3 +55,12 @@ void merge(int *V, int inicio, int meio, int fim){
     }
     free(temp);
 }
+
+int main() {
+    int V[10] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    int i;
+    mergeSort(V, 0, 9);
+    for(i = 0; i < 10; i++)
+        printf("%d ", V[i]);
+    return 0;
+}

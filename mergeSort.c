@@ -1,15 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
-void mergeSort(int *V, int inicio, int fim) {  // ordena o vetor V entre os índices inicio e fim
-    int meio;
-    if (inicio < fim) { // se o vetor tiver mais de um elemento
-        meio = floor((inicio + fim) / 2); // calcula o meio do vetor	
-        mergeSort(V, inicio, meio); // ordena a primeira metade
-        mergeSort(V, meio + 1, fim); // ordena a segunda metade
-        merge(V, inicio, meio, fim); // intercala as duas metades ordenadas
-    }
-}
 
 void merge(int *V, int inicio, int meio, int fim){
     int *temp, p1, p2, tamanho, i, j, k;
@@ -56,8 +48,18 @@ void merge(int *V, int inicio, int meio, int fim){
     free(temp);
 }
 
+void mergeSort(int *V, int inicio, int fim) {  // ordena o vetor V entre os índices inicio e fim
+    int meio;
+    if (inicio < fim) { // se o vetor tiver mais de um elemento
+        meio = floor((inicio + fim) / 2); // calcula o meio do vetor	
+        mergeSort(V, inicio, meio); // ordena a primeira metade
+        mergeSort(V, meio + 1, fim); // ordena a segunda metade
+        merge(V, inicio, meio, fim); // intercala as duas metades ordenadas
+    }
+}
+
 int main() {
-    int V[10] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    int V[10] = {7, 10, 8, 1, 4, 9, 6, 5, 2, 3};
     int i;
     mergeSort(V, 0, 9);
     for(i = 0; i < 10; i++)

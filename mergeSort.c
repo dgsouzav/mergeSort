@@ -1,3 +1,8 @@
+
+// CÓDIGO RETIRADO DO CANAL PROGRAMAÇÃO DESCOMPLICADA
+// LINK DO VÍDEO: https://www.youtube.com/watch?v=RZbg5oT5Fgw&ab_channel=Programa%C3%A7%C3%A3oDescomplicada
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
